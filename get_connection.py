@@ -22,19 +22,17 @@ async def init_tables():
             create table if not exists users(
                 id serial primary key,
                 username varchar(20),
-                full_name varchar(100) not null,
-                phone_number varchar(13) not null,
-                balance bigint check(balance > 0),
-                telegram_id bigint
+                balance numeric(9,2) default 0,
+                telegram_id bigint unique
         );
             create table if not exists transactions(
                 id serial primary key,
-                type varchar(20) check(type = 'income' or type = 'expence'),
+                type varchar(20) check(type = 'income' or type = 'expense'),
                 description varchar(100),
                 created_at timestamp default now(),
                 amount numeric(9,2),
                 due_date timestamp default now(),
-                user_id int references users(id)
+                user_id bigint references users(id)
         );
 """)
         print("Tables created successfully!")
